@@ -1,6 +1,9 @@
 package com.example.sbprojectex.Filter;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -10,9 +13,13 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import com.example.sbprojectex.Filter.httpCache.CachedHttpServletRequest;
 import com.example.sbprojectex.Filter.httpCache.CachedHttpServletResponse;
@@ -29,8 +36,13 @@ public class RequestCachingFilter extends OncePerRequestFilter{
             throws ServletException, IOException {
             
                 //  HttpServlet class wrapping
-            CachedHttpServletRequest cachedRequest = new CachedHttpServletRequest(request);
-            CachedHttpServletResponse cachedResponse = new CachedHttpServletResponse(response);
+            // CachedHttpServletRequest cachedRequest = new CachedHttpServletRequest(request);
+            // CachedHttpServletResponse cachedResponse = new CachedHttpServletResponse(response);
+
+            ContentCachingRequestWrapper cachedRequest = new ContentCachingRequestWrapper(request);
+            ContentCachingResponseWrapper cachedResponse = new ContentCachingResponseWrapper(response);
+
+                
 
             String queryStr     = cachedRequest.getQueryString();
             String reqUri       = queryStr == null ? cachedRequest.getRequestURI() : cachedRequest.getRequestURI() + "?" + queryStr;
@@ -38,22 +50,34 @@ public class RequestCachingFilter extends OncePerRequestFilter{
             String httpMtd      = cachedRequest.getMethod();
             String contentType  = cachedRequest.getContentType();
             String params       = getReqPrmStr(cachedRequest);
-            String reqDataStr   = cachedRequest.toDataString();
+            //String reqDataStr   = cachedRequest.toDataString();
+             String reqDataStr   = "";
             String resDataStr   = "";
 
             log.debug("[{}]      method : [{}],   URI : [{}],   contentType : [{}],   params : [{}]",
                                 reqAddr,  httpMtd,         reqUri,       contentType,          params );
             
-            // request body data
-            reqDataStr = reqDataStr.contains("multipart/form-data") ? "" : reqDataStr;
-            log.debug("REQUEST DATA: " + reqDataStr);
+
+                        
             
+
             // do Filter
             filterChain.doFilter(cachedRequest, cachedResponse);
 
+            reqDataStr = new String(cachedRequest.getContentAsByteArray(), StandardCharsets.UTF_8);
+
+            resDataStr = new String(cachedResponse.getContentAsByteArray(), StandardCharsets.UTF_8);
+            
+            // request body data
+            log.debug("REQUEST DATA: " + reqDataStr);   
+
             // response body data
-            resDataStr = cachedResponse.toDateString();
             log.debug("RESPONSE DATA: " + resDataStr);
+
+            cachedResponse.copyBodyToResponse();
+            
+            
+            
 
         }
 
