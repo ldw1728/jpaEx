@@ -25,19 +25,4 @@ public class InitController {
         return "index.html";
     }
 
-    @RequestMapping(value = "/data", method = RequestMethod.GET)
-    public String requestData(HttpServletRequest request, Model model) throws IOException{
-        model.addAttribute("data", "wooklee");
-        return "data.html";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/resdata", method = RequestMethod.POST)
-    public String resData(HttpServletRequest request, Model model,  int[] ldw, @RequestBody String name) throws IOException{
-        model.addAttribute("data", "wooklee");
-
-        //log.info(Arrays.toString(ldw));
-        return "111";
-    }
-
 }

@@ -1,5 +1,7 @@
 package com.example.sbprojectex.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,11 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/member")
 public class MemberController {
 
+
+    // constructor DI
     private final MemberService memberService;
     
     @PostMapping(value = "/join")
     @ResponseBody
-    public String joinMember(@RequestBody CreationMemDto cmDto){
+    public String joinMember(@RequestBody @Valid CreationMemDto cmDto){
         memberService.addMember(cmDto);
         return "joinSucc";
     }
