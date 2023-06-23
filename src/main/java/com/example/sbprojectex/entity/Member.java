@@ -1,5 +1,6 @@
-package com.example.sbprojectex.model;
+package com.example.sbprojectex.entity;
 
+import javax.crypto.SecretKeyFactory;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,12 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "PASSWORD")
+    private String password;
+
     @Column(name = "NAME")
     private String name;
 
@@ -28,10 +35,12 @@ public class Member {
     private int age;
 
     @Builder
-    public Member(String name, int age){
+    public Member(String email, String password, String name, int age){
+        this.email = email;
+        this.password = password;
         this.name = name;
         this.age = age;
-
+        
     }
 
     @Override
