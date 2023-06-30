@@ -5,10 +5,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import lombok.Data;
+import com.example.sbprojectex.entity.Member;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class MemberDto {
+public abstract class MemberDto {
 
     private long id;
 
@@ -22,5 +28,7 @@ public class MemberDto {
     @Positive
     @NotNull
     private int age;
+
+    public abstract Member toMemeberEntity();
 
 }

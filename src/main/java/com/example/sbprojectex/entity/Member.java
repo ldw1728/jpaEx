@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.example.sbprojectex.dto.LoadMemDto;
+import com.example.sbprojectex.dto.MemberDto;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
