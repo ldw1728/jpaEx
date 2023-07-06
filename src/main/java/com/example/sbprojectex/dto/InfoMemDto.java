@@ -8,13 +8,13 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class LoadMemDto extends MemberDto{
+public class InfoMemDto extends MemberDto{
 
     @Nullable
     private String password;
     
     @Builder
-    public LoadMemDto(long id, String email, String name, int age, String password){
+    public InfoMemDto(long id, String email, String name, int age, String password){
         super(id, email, name, age);
         this.password = password;
     }

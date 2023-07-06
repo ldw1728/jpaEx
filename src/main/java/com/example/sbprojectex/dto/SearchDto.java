@@ -1,15 +1,14 @@
 package com.example.sbprojectex.dto;
 
-import javax.validation.constraints.Email;
+import java.util.Date;
 
 import lombok.Data;
 
 @Data
 public class SearchDto {
 
-    /* Member */
-    @Email
-    private String sEmail;
+    private Date regDt;
 
-    private String sName;
+    private Date upDt;
+    
 }

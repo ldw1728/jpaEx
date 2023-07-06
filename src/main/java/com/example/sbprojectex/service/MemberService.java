@@ -1,13 +1,16 @@
 package com.example.sbprojectex.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import com.example.sbprojectex.dto.CreationMemDto;
-import com.example.sbprojectex.dto.LoadMemDto;
+import com.example.sbprojectex.dto.InfoMemDto;
 import com.example.sbprojectex.dto.MemberDto;
+import com.example.sbprojectex.dto.MemberSrcDto;
 import com.example.sbprojectex.dto.SearchDto;
 import com.example.sbprojectex.entity.Member;
 import com.example.sbprojectex.repository.MemberRepository;
@@ -25,19 +28,25 @@ public class MemberService {
         memberRepository.save(memDto.toMemeberEntity());
     }
 
-    public MemberDto getMemberInfo(SearchDto searchDto){
+    public List<InfoMemDto> getTotMember(){
+        //memberRepository.findBy
+        return null;
+    }
+
+    public MemberDto getMemberInfo(MemberSrcDto searchDto){
 
         Member resultMember = null;
-        LoadMemDto loadMemDto = null;
+        InfoMemDto loadMemDto = null;
 
         String sEmail = searchDto.getSEmail();
 
         if(!StringUtils.isEmpty(sEmail)){
+            
             resultMember = memberRepository.findByEmail(sEmail);
         }
         
         if(resultMember != null){
-            loadMemDto = LoadMemDto.builder()   .email(resultMember.getEmail())
+            loadMemDto = InfoMemDto.builder()   .email(resultMember.getEmail())
                                                 .age(resultMember.getAge())
                                                 .id(resultMember.getId())
                                                 .password(resultMember.getPassword())
