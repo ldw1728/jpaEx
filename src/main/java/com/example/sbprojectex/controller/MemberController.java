@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sbprojectex.dto.CreationMemDto;
 import com.example.sbprojectex.dto.InfoMemDto;
+import com.example.sbprojectex.dto.MemberDto;
 import com.example.sbprojectex.dto.MemberSrcDto;
 import com.example.sbprojectex.dto.SearchDto;
 import com.example.sbprojectex.service.MemberService;
@@ -50,12 +51,12 @@ public class MemberController {
             return null;
     }
 
-    @PostMapping("/totInfo")
-    public List<InfoMemDto> totalInfo(Model model, Pageable pageable){
+    @GetMapping("/list")
+    public List<InfoMemDto> memList(Model model, Pageable pageable, @ModelAttribute @Valid MemberSrcDto searchDto){
         
+        List<InfoMemDto> dtos = memberService.getMembers(searchDto);
 
-
-        return null;
+        return dtos;
     }
 
 }

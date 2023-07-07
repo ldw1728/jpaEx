@@ -16,8 +16,6 @@ import lombok.NoArgsConstructor;
 @Data
 public abstract class MemberDto {
 
-    private long id;
-
     @Email
     @NotBlank
     private String email;

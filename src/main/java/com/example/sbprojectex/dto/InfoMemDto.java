@@ -14,8 +14,8 @@ public class InfoMemDto extends MemberDto{
     private String password;
     
     @Builder
-    public InfoMemDto(long id, String email, String name, int age, String password){
-        super(id, email, name, age);
+    public InfoMemDto(String email, String name, int age, String password){
+        super(email, name, age);
         this.password = password;
     }
 

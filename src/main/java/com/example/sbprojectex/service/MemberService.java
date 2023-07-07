@@ -1,5 +1,6 @@
 package com.example.sbprojectex.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -38,17 +39,12 @@ public class MemberService {
         Member resultMember = null;
         InfoMemDto loadMemDto = null;
 
-        String sEmail = searchDto.getSEmail();
+        resultMember = memberRepository.findByMember(searchDto);
 
-        if(!StringUtils.isEmpty(sEmail)){
-            
-            resultMember = memberRepository.findByEmail(sEmail);
-        }
-        
         if(resultMember != null){
             loadMemDto = InfoMemDto.builder()   .email(resultMember.getEmail())
                                                 .age(resultMember.getAge())
-                                                .id(resultMember.getId())
+                                                .name(resultMember.getName())
                                                 .password(resultMember.getPassword())
                                                 .build();
         }
@@ -56,4 +52,24 @@ public class MemberService {
         return loadMemDto;
     }
     
+
+    public List<InfoMemDto> getMembers(MemberSrcDto searchDto){
+
+        List<InfoMemDto> memberDtos = new ArrayList<InfoMemDto>();
+        
+        List<Member> members = memberRepository.findAllByMember(searchDto);
+
+        if(!members.isEmpty()){
+            for(Member mem : members){
+                InfoMemDto infoMemTmp = InfoMemDto.builder().email(mem.getEmail())
+                                                            .age(mem.getAge())
+                                                            .name(mem.getName())
+                                                            .password(mem.getPassword())
+                                                            .build();
+
+                memberDtos.add(infoMemTmp);                                                            
+            }
+        }
+        return memberDtos;
+    }
 }

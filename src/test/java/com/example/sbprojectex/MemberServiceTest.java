@@ -30,9 +30,9 @@ class MemberServiceTest{
         //mvc.perform(post("/join"))
         
 
-        Member retrivedMember = memberRepository.findById(member.getId()).get();
+       //Member retrivedMember = memberRepository.findById(member.getId()).get();
 
-        System.out.println(retrivedMember.toString());        
+        //System.out.println(retrivedMember.toString());        
     }
 
 
