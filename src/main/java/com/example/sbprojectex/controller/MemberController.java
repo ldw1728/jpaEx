@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,9 +53,9 @@ public class MemberController {
     }
 
     @GetMapping("/list")
-    public List<InfoMemDto> memList(Model model, Pageable pageable, @ModelAttribute @Valid MemberSrcDto searchDto){
-        
-        List<InfoMemDto> dtos = memberService.getMembers(searchDto);
+    public Page<InfoMemDto> memList(Model model, Pageable pageable, @ModelAttribute @Valid MemberSrcDto searchDto){
+        //log.debug(pageable.getPageParameter());
+        Page<InfoMemDto> dtos = memberService.getMembers(searchDto, pageable);
 
         return dtos;
     }

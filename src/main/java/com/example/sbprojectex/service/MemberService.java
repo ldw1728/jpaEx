@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -53,23 +55,24 @@ public class MemberService {
     }
     
 
-    public List<InfoMemDto> getMembers(MemberSrcDto searchDto){
+    public Page<InfoMemDto> getMembers(MemberSrcDto searchDto, Pageable pageable){
 
-        List<InfoMemDto> memberDtos = new ArrayList<InfoMemDto>();
+        //List<InfoMemDto> memberDtos = new ArrayList<InfoMemDto>();
         
-        List<Member> members = memberRepository.findAllByMember(searchDto);
+        Page<InfoMemDto> members = memberRepository.findAllByMember(searchDto, pageable);
 
-        if(!members.isEmpty()){
-            for(Member mem : members){
-                InfoMemDto infoMemTmp = InfoMemDto.builder().email(mem.getEmail())
-                                                            .age(mem.getAge())
-                                                            .name(mem.getName())
-                                                            .password(mem.getPassword())
-                                                            .build();
+        // if(!members.isEmpty()){
+        //     for(Member mem : members.getContent()){
+        //         InfoMemDto infoMemTmp = InfoMemDto.builder().email(mem.getEmail())
+        //                                                     .age(mem.getAge())
+        //                                                     .name(mem.getName())
+        //                                                     .password(mem.getPassword())
+        //                                                     .build();
 
-                memberDtos.add(infoMemTmp);                                                            
-            }
-        }
-        return memberDtos;
+        //         memberDtos.add(infoMemTmp);                                                            
+        //     }
+        // }
+
+        return members;
     }
 }

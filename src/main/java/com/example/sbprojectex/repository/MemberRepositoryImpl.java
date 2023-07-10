@@ -2,9 +2,14 @@ package com.example.sbprojectex.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import com.example.sbprojectex.dto.InfoMemDto;
 import com.example.sbprojectex.dto.MemberSrcDto;
+import com.example.sbprojectex.dto.QInfoMemDto;
 import com.example.sbprojectex.entity.Member;
 import com.example.sbprojectex.entity.QMember;
 import com.querydsl.core.NonUniqueResultException;
@@ -26,17 +31,28 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
     
     @Override
-    public List<Member> findAllByMember(MemberSrcDto memberSrcDto) {
-        
-        List<Member> members = jpaQueryFactory
-                                            .select(qMember)
+    public Page<InfoMemDto> findAllByMember(MemberSrcDto memberSrcDto, Pageable pageable) {
+                                           
+        List<InfoMemDto> memberDto = jpaQueryFactory
+                                            .select(new QInfoMemDto(qMember.email, qMember.name, qMember.age, qMember.password))
                                             .from(qMember)
                                             .where(
                                                 nameEq(memberSrcDto.getSName()), 
                                                 emailEq(memberSrcDto.getSEmail())
                                                 )
+                                             .offset(pageable.getOffset())
+                                             .limit(pageable.getPageSize())
                                             .fetch();
-       return members;
+        
+        long totCnt = jpaQueryFactory
+                                .select(qMember.count())
+                                .from(qMember)
+                                .where(
+                                                nameEq(memberSrcDto.getSName()), 
+                                                emailEq(memberSrcDto.getSEmail())
+                                                )
+                                .fetchOne();
+       return new PageImpl(memberDto, pageable, totCnt);
     }
 
     @Override
